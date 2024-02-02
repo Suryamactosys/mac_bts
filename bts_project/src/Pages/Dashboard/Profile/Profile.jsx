@@ -12,6 +12,7 @@ import {
   Button,
 } from "@mui/material";
 import Loader from "../../../Components/Loading/Loading";
+import { BASE_URl } from "../../../api";
 
 const UserProfile = () => {
   const [usersData, setUsersData] = useState([]);
@@ -20,7 +21,7 @@ const UserProfile = () => {
     // Simulating data fetching from an API
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/user/fetch");
+        const response = await fetch(`${BASE_URl}user/fetch`);
         const data = await response.json();
         setUsersData(data);
       } catch (error) {
@@ -58,18 +59,15 @@ const UserProfile = () => {
       });
 
       // Send API request to update user status on the server
-      const response = await fetch(
-        `http://localhost:3001/user/update/${userId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status: updatedUsers.find((user) => user._id === userId).status,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_URl}user/update/${userId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: updatedUsers.find((user) => user._id === userId).status,
+        }),
+      });
 
       if (!response.ok) {
         // Handle error, maybe revert the local state change
